@@ -1,0 +1,29 @@
+name: Integration
+
+on:
+  push:
+    branches:
+      - staging
+  workflow_run:
+    workflows:
+      - update
+    types:
+      - completed
+
+jobs:
+  run-checks:
+    name: run-checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: staging
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v18
+
+      - name: Check Nix Flake
+        run: |
+          nix flake check
