@@ -20,8 +20,10 @@
         with nixpkgs.lib;
         let pkgs = nixpkgs.legacyPackages.${system};
         in {
-          allOurSoftwareBuilds = pkgs.runScript "get-my-software" {}
-            (concatMapStringsSep "\n" (pkg: "nix path-info -s ${pkg}") (builtins.attrNames self.packages.${system}));
+          allOurSoftwareBuilds = pkgs.runCommand "get-my-software" {} ''
+            ${concatMapStringsSep "\n" (pkg: "nix path-info -s ${pkg}") (builtins.attrNames self.packages.${system})}
+            touch $out
+          '';
         }
       );
     };
