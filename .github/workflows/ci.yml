@@ -11,7 +11,7 @@ on:
       - completed
 
 jobs:
-  run-checks:
+  ci:
     name: run-checks
     runs-on: ubuntu-latest
 
