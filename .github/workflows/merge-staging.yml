@@ -1,4 +1,4 @@
-name: Merge Staging into Main
+name: merge-staging
 
 on:
   workflow_run:
