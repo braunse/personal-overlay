@@ -14,5 +14,15 @@
           emacs = pkgs.emacs.pkgs.withPackages (ep: [ ep.vterm ]);
         }
       );
+
+      checks = nixpkgs.lib.genAttrs [ "x86_64-linux" ] (system:
+        with builtins;
+        with nixpkgs.lib;
+        let pkgs = nixpkgs.legacyPackages.${system};
+        in {
+          allOurSoftwareBuilds = pkgs.runScript "get-my-software" {}
+            (concatMapStringsSep "\n" (pkg: "nix path-info -s ${pkg}") (builtins.attrNames self.packages.${system}));
+        }
+      );
     };
 }
