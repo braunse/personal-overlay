@@ -22,7 +22,7 @@
         in {
           allOurSoftwareBuilds = pkgs.runCommand "get-my-software" {} ''
             ${concatMapStringsSep "\n"
-              (pkg: "echo ${pkg} is at ${self.packages.${system}.${pkg}}"
+              (pkg: "echo \"${pkg} is at ${self.packages.${system}.${pkg}}\" >&2"
               ) (builtins.attrNames self.packages.${system})}
             touch $out
           '';
