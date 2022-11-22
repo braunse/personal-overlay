@@ -1,0 +1,30 @@
+name: Update Flake
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+
+jobs:
+  update:
+    name: update
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: action/checkout@v3
+        with:
+          ref: staging
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v18
+        with:
+          nix_path: nixpkgs=channel:nixpkgs-unstable
+
+      - name: Update
+        run: |
+          git config --local user.name "github-actions"
+          git config --local user.email = "action@github.com"
+
+          nix flake update
+
+          git commit -am "Update Nix Flake Inputs"
+          git push
