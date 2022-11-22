@@ -21,7 +21,7 @@
         let pkgs = nixpkgs.legacyPackages.${system};
         in {
           allOurSoftwareBuilds = pkgs.runCommand "get-my-software" {} ''
-            ${concatMapStringsSep "\n" (pkg: "nix path-info -s ${pkg}") (builtins.attrNames self.packages.${system})}
+            ${concatMapStringsSep "\n" (pkg: "${pkgs.nixVersions.stable}/bin/nix path-info -s ${pkg}") (builtins.attrNames self.packages.${system})}
             touch $out
           '';
         }
