@@ -3,15 +3,19 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    emacs-overlay.url = "github:nix-community/emacs-overlay";
+    emacs-overlay.inputs.nixpkgs.follows = "nixpkgs";
     utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, utils }:
+  outputs = { self, nixpkgs, emacs-overlay, utils }:
     {
       packages = nixpkgs.lib.genAttrs [ "x86_64-linux" ] (system:
         let pkgs = nixpkgs.legacyPackages.${system};
+            emacsGit = emacs-overlay.packages.${system}.emacsGit;
+            emacsPkgs = pkgs.emacsPackagesNgFor emacsGit;
         in {
-          emacs = pkgs.emacs.pkgs.withPackages (ep: [ ep.vterm ]);
+          emacs = emacsPkgs.withPackages (ep: [ ep.vterm ]);
         }
       );
 
