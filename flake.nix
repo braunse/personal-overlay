@@ -13,7 +13,8 @@
       packages = nixpkgs.lib.genAttrs [ "x86_64-linux" ] (system:
         let pkgs = nixpkgs.legacyPackages.${system};
             emacsGit = emacs-overlay.packages.${system}.emacsGit;
-            emacsPkgs = pkgs.emacsPackagesNgFor emacsGit;
+            # emacsPkgs = pkgs.emacsPackagesNgFor emacsGit;
+            emacsPkgs = pkgs.emacsPackagesNg;
         in {
           emacs = emacsPkgs.withPackages (ep: [ ep.vterm ]);
         }
