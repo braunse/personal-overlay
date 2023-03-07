@@ -11,10 +11,13 @@
   outputs = { self, nixpkgs, emacs-overlay, utils }:
     {
       packages = nixpkgs.lib.genAttrs [ "x86_64-linux" ] (system:
-        let pkgs = nixpkgs.legacyPackages.${system};
+        let pkgs = nixpkgs.legacyPackages.${system}.extend (self: super: {
+              melpaBuild = super.emacsPackages.melpaBuild;
+              melpaStablePackages = super.emacsPackages.melpaStablePackages;
+            });
             emacsGit = emacs-overlay.packages.${system}.emacsGit;
             # emacsPkgs = pkgs.emacsPackagesNgFor emacsGit;
-            emacsPkgs = pkgs.emacsPackagesNg;
+            emacsPkgs = pkgs.emacsPackages;
         in {
           emacs = emacsPkgs.withPackages (ep: [ 
             ep.vterm
