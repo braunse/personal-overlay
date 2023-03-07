@@ -16,7 +16,12 @@
             # emacsPkgs = pkgs.emacsPackagesNgFor emacsGit;
             emacsPkgs = pkgs.emacsPackagesNg;
         in {
-          emacs = emacsPkgs.withPackages (ep: [ ep.vterm ]);
+          emacs = emacsPkgs.withPackages (ep: [ 
+            ep.vterm
+            ep.tsc
+            ep.tree-sitter-langs
+            ep.parinfer-rust-mode
+          ]);
         }
       );
 
